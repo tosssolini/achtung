@@ -10,7 +10,7 @@ let speed;
 let snakes = [];
 let xlim;
 let ylim;
-let screenState = 0;
+let screenState = 2;
 
 function preload() {
   font = loadFont('codegon.ttf')
@@ -30,7 +30,7 @@ function setup()
   fps = gameData["settings"]["fps"];
   maxPlayers = gameData["settings"]["maxPlayers"];
   speed = gameData["settings"]["speed"];
-  xlim = [0, size*1.2];
+  xlim = [0, size];
   ylim = [0, size];
   createCanvas(size*1.4, size);
   frameRate(fps)
@@ -89,24 +89,29 @@ function draw()
       .textSize(60);
       textFont(font);
       textAlign(CENTER);
-      text(20, size*1.3, height*(i+1) / 6);
+      text(snakes[i].score, size*1.3, height*(i+1) / 6);
     }
 
     // Game loop 
     for (s of snakes) {
-      s.getSteeringInput();
-      s.update();
-      s.checkEdges();
-      s.checkTrace();
-      for (other of snakes) {
-        if (other != s) {
-          s.checkCollision(other);
+      if (s.alive == true) {
+        s.getSteeringInput();
+        s.update();
+        s.checkEdges();
+        s.checkTrace();
+        for (other of snakes) {
+          if (other != s) {
+            s.checkCollision(other);
+          }
         }
-      }
-      s.show();// code block to be executed
-
-      if (s.alive == false) {
-        console.log("Player down")
+        s.show();
+        if (s.alive == false) {
+          for (other of snakes) {
+            if (other != s) {
+              s.addScore(other);
+            }
+          }
+        }
       }
     }
   }

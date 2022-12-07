@@ -9,6 +9,7 @@ class Snake {
     this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
     this.size = 5;
     this.alive = true;
+    this.score = 0;
     // Create a 2D grid to trace where the snake has been
     let grid = new Array(xlim[1]);
     // Loop to create 2D array using 1D array
@@ -36,7 +37,7 @@ class Snake {
   }
 
   checkEdges() {
-    if ((this.pos.x < xlim[0]) || (this.pos.x > xlim[1]) || (this.pos.y < ylim[0]) || (this.pos.y > ylim[1])) {
+    if ((this.pos.x <= xlim[0]) || (this.pos.x >= xlim[1]) || (this.pos.y <= ylim[0]) || (this.pos.y >= ylim[1])) {
       this.alive = false;
     } 
   }
@@ -44,6 +45,9 @@ class Snake {
   checkTrace() {
     let x = Math.floor(this.pos.x);
     let y = Math.floor(this.pos.y);
+    x = this.checkBuffer(x)
+    y = this.checkBuffer(y)
+    console.log(x,y)
     if (this.traceGrid[x][y] == 1) {
       if ((x == this.lastX) && (y == this.lastY)) {
       } else {
@@ -59,6 +63,8 @@ class Snake {
   checkCollision(other) {
     let x = Math.floor(this.pos.x);
     let y = Math.floor(this.pos.y);
+    x = this.checkBuffer(x)
+    y = this.checkBuffer(y)
     if (other.traceGrid[x][y] == 1) {
       this.alive = false;
       }
@@ -83,6 +89,22 @@ class Snake {
     this.angle += 2*speed;
     this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
   }
+
+  addScore(other) {
+    if (other.alive == true) {
+      other.score += 1;
+    }
+  }
+
+  checkBuffer(x) {
+    if (x < xlim[0]){
+      x = xlim[0];
+    }
+    if (x > xlim[1]-1){
+      x = xlim[1]-1;
+    }
+    return x
+  } 
 
   show() {
     noStroke();
