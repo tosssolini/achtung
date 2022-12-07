@@ -1,27 +1,19 @@
 // Zatacka replica with p5.js
 // Author: Øyvind Torgersrud
 
-
 let font;
 let gameData;
-let size = 800;
-let fps = 60;
-let speed = 1;
+let size;
+let fps;
+let maxPlayers;
+let speed;
 let snakes = [];
 let screenState = 0;
-let id;
-let rgb;
-let leftKey;
-let rightKey;
-let maxPlayers = 5;
 
 function preload() {
   font = loadFont('codegon.ttf')
   gameData = loadJSON('game_data.json')
-  console.log(gameData)
 }
-
-
 
 function keyPressed() {
   if (keyCode === ENTER) {
@@ -30,10 +22,13 @@ function keyPressed() {
   }
 }
 
-
 function setup() 
 {
-  createCanvas(size*1.6, size);
+  size = gameData["settings"]["size"];
+  fps = gameData["settings"]["fps"];
+  maxPlayers = gameData["settings"]["maxPlayers"];
+  speed = gameData["settings"]["speed"];
+  createCanvas(size, size);
   frameRate(fps)
   background(0);
 
