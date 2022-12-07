@@ -1,8 +1,10 @@
 class Snake {
-  constructor(id, color) {
+  constructor(id, rgb, leftKey, rightKey) {
     this.id = id
-    this.color = color;
-    this.pos = createVector(random(100,size-100), random(100,size-100))
+    this.color = rgb;
+    this.leftKey = leftKey;
+    this.rightKey = rightKey;
+    this.pos = createVector(random(100,size-100), random(100,size-100));
     this.angle = random(0,360);
     this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
     this.size = 5;
@@ -61,23 +63,30 @@ class Snake {
       console.log("Game over")
       }
   }
-    
-  keyPressed() {
-    if (keyIsDown(LEFT_ARROW)) {
-      this.angle -= 2*speed;
-      this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
-
-    } else if (keyIsDown(RIGHT_ARROW)) {
-      this.angle += 2*speed;
-      this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
+  
+  getSteeringInput() {
+    if (keyIsDown(this.leftKey)){
+      this.turnLeft();
+    } else if (keyIsDown(this.rightKey)){
+      this.turnRight();
     } else {
-        // nothing
+        // do nothing
     }
   }
 
-    show() {
-      noStroke();
-      fill(this.color[0], this.color[1], this.color[2]);
-      ellipse(this.pos.x, this.pos.y, this.size);
-    }
+  turnLeft() {
+    this.angle -= 2*speed;
+    this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
   }
+
+  turnRight() {
+    this.angle += 2*speed;
+    this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
+  }
+
+  show() {
+    noStroke();
+    fill(this.color[0], this.color[1], this.color[2]);
+    ellipse(this.pos.x, this.pos.y, this.size);
+  }
+}
