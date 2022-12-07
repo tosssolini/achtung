@@ -1,69 +1,100 @@
 // Zatacka replica with p5.js
 // Author: Øyvind Torgersrud
 
-let size = 1000;
+
+let font;
+let gameData;
+let size = 800;
 let fps = 60;
 let speed = 1;
-let numberOfPlayers = 6;
 let snakes = [];
+let screenState = 0;
+let id;
+let rgb;
+let leftKey;
+let rightKey;
+let maxPlayers = 5;
 
-const players = [
-    {
-      player: 1,
-      color: [255,15,15] // red
-    },
-    {
-      player: 2,
-      color: [255,255,0]  // yellow
-    },
-    {
-      player: 3,
-      color: [255,165,0]  // orange
-    },
-    {
-      player: 4,
-      color: [0,255,0]  // green
-    },
-    {
-      player: 5,
-      color: [255,131,250]  // orchid
-    },
-    {
-      player: 6,
-      color: [0,245,255]  // turquoise
-    }
-]
+function preload() {
+  font = loadFont('codegon.ttf')
+  gameData = loadJSON('game_data.json')
+  console.log(gameData)
+}
+
+
+
+function keyPressed() {
+  if (keyCode === ENTER) {
+    screenState += 1;
+    background(0);
+  }
+}
+
 
 function setup() 
 {
-    createCanvas(size*1.6, size);
-    frameRate(fps)
-    background(0);
-    
-    for (var i = 0; i < numberOfPlayers; i++) {
-        let id = i+1;
-        snakes[i] = new Snake(players[i].player, players[i].color);
-    }
+  createCanvas(size*1.6, size);
+  frameRate(fps)
+  background(0);
 
+  
+  // Add players to game (TODO based on user input)
+  for (var i = 0; i < maxPlayers; i++) {
+    id = gameData["players"][i]["id"];
+    rgb = gameData["players"][i]["rgb"];
+    leftKey = gameData["players"][i]["left"]["code"];
+    rightKey = gameData["players"][i]["right"]["code"];
+    snakes[i] = new Snake(id, rgb, leftKey, rightKey);
+    console.log(snakes[i].leftKey)
+  }
 }
 
 function draw()
-{   
-    for (s of snakes) {
-        s.update();
-        s.checkEdges();
-        s.checkTrace();
-        for (other of snakes) {
-            if (other != s) {
-                s.checkCollision(other);
-            }
-        }
-        s.keyPressed();
-        s.show();// code block to be executed
+{  
 
-        if (s.alive == false) {
-            console.log("Game over")
-            exit()
-        }
+  if (screenState == 0) {
+    // Just the achtung welcome screen
+    fill(255)
+    .strokeWeight(0)
+    .textSize(30);
+    textFont(font);
+    textAlign(CENTER);
+    text('Actung die Kurve!', width / 2, height / 2);
+
+  } else if (screenState == 1) {
+    
+    // Screen to select players
+    for (let i = 0; i<maxPlayers; i++) {
+      let id = gameData["players"][i]["id"];
+      let left = gameData["players"][i]["left"]["key"];
+      let right = gameData["players"][i]["right"]["key"];
+      let rgb = gameData["players"][i]["rgb"];
+      fill(rgb)
+      .strokeWeight(0)
+      .textSize(30);
+      textFont(font);
+      textAlign(LEFT);
+      text('Player ' + id + ":  " + left + "  " + right, width / 6, height*(i+2) / 10);
     }
+
+  } else if (screenState == 2) {
+    // Game screen
+    for (s of snakes) {
+      s.getSteeringInput();
+      s.update();
+      s.checkEdges();
+      s.checkTrace();
+      for (other of snakes) {
+        if (other != s) {
+          s.checkCollision(other);
+        }
+      }
+      s.show();// code block to be executed
+
+      if (s.alive == false) {
+        console.log("Game over")
+        exit()
+      }
+    }
+  }
 }

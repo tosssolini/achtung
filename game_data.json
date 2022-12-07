@@ -1,0 +1,87 @@
+{
+    "players": [
+    {
+        "id": 1,
+        "color": "red",
+        "rgb": [255,15,15],
+        "control": "keyboard",
+        "left": 
+        { 
+            "key": 1,
+            "code": 49
+        },
+        "right": 
+        {
+            "key": "Q",
+            "code": 81
+        }
+    },
+
+    {
+        "id": 2,
+        "color": "yellow",
+        "rgb": [255,245,15],
+        "control": "keyboard",
+        "left": 
+        { 
+            "key": "Z",
+            "code": 90
+        },
+        "right": 
+        {
+            "key": "X",
+            "code": 88
+        }
+    },
+
+    {
+        "id": 3,
+        "color": "orange",
+        "rgb": [255,165,0],
+        "control": "keyboard",
+        "left": 
+        { 
+            "key": "M",
+            "code": 77
+        },
+        "right": 
+        {
+            "key": ",",
+            "code": 188
+        }
+    },
+
+    {
+        "id": 4,
+        "color": "green",
+        "rgb": [0,255,0],
+        "control": "keyboard",
+        "left": 
+        { 
+            "key": "L.ARROW",
+            "code": 37
+        },
+        "right": 
+        {
+            "key": "D.ARROW",
+            "code": 40
+        }
+    },
+
+    {
+        "id": 5,
+        "color": "orchid",
+        "rgb": [255,131,250],
+        "control": "keyboard",
+        "left": 
+        { 
+            "key": "+",
+            "code": 107
+        },
+        "right": 
+        {
+            "key": "-",
+            "code": 109
+        }
+    }]
+}
