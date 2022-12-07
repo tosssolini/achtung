@@ -1,4 +1,12 @@
 {
+    "settings": 
+    {
+        "size": 800,
+        "fps": 60,
+        "maxPlayers": 5,
+        "speed": 1
+    },
+
     "players": [
     {
         "id": 1,

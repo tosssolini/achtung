@@ -4,7 +4,7 @@ class Snake {
     this.color = rgb;
     this.leftKey = leftKey;
     this.rightKey = rightKey;
-    this.pos = createVector(random(100,size-100), random(100,size-100));
+    this.pos = createVector(random(0.2*size,0.8*size), random(0.2*size,0.8*size));
     this.angle = random(0,360);
     this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
     this.size = 5;
