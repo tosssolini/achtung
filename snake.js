@@ -10,6 +10,9 @@ class Snake {
     this.size = 5;
     this.alive = true;
     this.score = 0;
+    this.gapTime = 0;
+    this.gapFlag = 0;
+
     // Create a 2D grid to trace where the snake has been
     let grid = new Array(xlim[1]);
     // Loop to create 2D array using 1D array
@@ -25,7 +28,6 @@ class Snake {
     this.traceGrid = grid;
     this.lastX = Math.floor(this.pos.x);
     this.lastY = Math.floor(this.pos.y);
-    console.log(this.lastX, this.lastY)
     this.traceGrid[this.lastX][this.lastY] = 1;
   }
 
@@ -47,16 +49,17 @@ class Snake {
     let y = Math.floor(this.pos.y);
     x = this.checkBuffer(x)
     y = this.checkBuffer(y)
-    console.log(x,y)
     if (this.traceGrid[x][y] == 1) {
       if ((x == this.lastX) && (y == this.lastY)) {
       } else {
         this.alive = false;
       }
   } else {
-      this.traceGrid[x][y] = 1;
-      this.lastX = x;
-      this.lastY = y;
+      if (this.gapFlag == 1) {
+        this.traceGrid[x][y] = 1;
+        this.lastX = x;
+        this.lastY = y;
+      }
     }
   }
 
@@ -117,10 +120,27 @@ class Snake {
       }
     }
   }
+
+  gapManager() {
+    if (this.gapTime >= 0) {
+      this.gapTime -= 1;
+    } else {
+      if (this.gapFlag == 0) {
+        this.gapTime = random(120,240);
+        this.gapFlag = 1;
+      } else if (this.gapFlag == 1) {
+        this.gapTime = random(10,20);
+        this.gapFlag = 0;
+      }
+    }
+  }
+
   show() {
     noStroke();
     fill(this.color[0], this.color[1], this.color[2]);
-    ellipse(this.pos.x, this.pos.y, this.size);
+    if (this.gapFlag == 1) {
+      ellipse(this.pos.x, this.pos.y, this.size);
+    }
   }
 }
 

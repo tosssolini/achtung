@@ -98,6 +98,7 @@ function draw()
       if (s.alive == true) {
         alive += 1;
         s.getSteeringInput();
+        s.gapManager()
         s.update();
         s.checkEdges();
         s.checkTrace();
