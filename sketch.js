@@ -10,7 +10,8 @@ let speed;
 let snakes = [];
 let xlim;
 let ylim;
-let screenState = 2;
+let screenState = 0;
+let winner;
 
 function preload() {
   font = loadFont('codegon.ttf')
@@ -30,7 +31,7 @@ function setup()
   fps = gameData["settings"]["fps"];
   maxPlayers = gameData["settings"]["maxPlayers"];
   speed = gameData["settings"]["speed"];
-  xlim = [0, size];
+  xlim = [0, size * 1.2];
   ylim = [0, size];
   createCanvas(size*1.4, size);
   frameRate(fps)
@@ -44,7 +45,6 @@ function setup()
     leftKey = gameData["players"][i]["left"]["code"];
     rightKey = gameData["players"][i]["right"]["code"];
     snakes[i] = new Snake(id, rgb, leftKey, rightKey);
-    console.log(snakes[i].leftKey)
   }
 }
 
@@ -93,8 +93,10 @@ function draw()
     }
 
     // Game loop 
+    alive = 0;
     for (s of snakes) {
       if (s.alive == true) {
+        alive += 1;
         s.getSteeringInput();
         s.update();
         s.checkEdges();
@@ -114,5 +116,41 @@ function draw()
         }
       }
     }
+    
+    if (alive == 0) {
+      screenState = 3;
+    }
+
+  } else if (screenState == 3) {
+    fill(255)
+    .strokeWeight(0)
+    .textSize(30);
+    textFont(font);
+    textAlign(CENTER);
+    text('Press Enter to continue', width / 2, height / 2);
+
+  } else if (screenState == 4) {
+    for (s of snakes){
+      s.reset();
+      if (s.score >= (maxPlayers - 1) * 10){
+        winner = s.id;
+        screenState = 5
+      } else {
+        screenState = 2;
+      }
+    }
+  } else if (screenState == 5) {
+    fill(255)
+    .strokeWeight(0)
+    .textSize(30);
+    textFont(font);
+    textAlign(CENTER);
+    text('Konec Hry', width / 2, height / 3);
+    text('Press enter to play again', width / 2, height * 2 / 3);
+  } else if (screenState == 6) {
+      screenState = 0;
+      for (s of snakes){
+        s.score = 0;
+      }
   }
 }

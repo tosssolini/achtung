@@ -106,6 +106,17 @@ class Snake {
     return x
   } 
 
+  reset() {
+    this.alive = true;
+    this.pos = createVector(random(xlim[0],xlim[1]), random(ylim[0],ylim[1]));
+    this.angle = random(0,360);
+    this.vel = p5.Vector.fromAngle(radians(this.angle), speed);
+    for (var i = 0; i < xlim[1]; i++) {
+      for (var j = 0; j < ylim[1]; j++) {
+        this.traceGrid[i][j] = 0;
+      }
+    }
+  }
   show() {
     noStroke();
     fill(this.color[0], this.color[1], this.color[2]);
